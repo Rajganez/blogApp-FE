@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { clientAPI } from "../../api/api-axios.js";
+import { SIGN_UP } from "../../api/constants.js";
 
 const LoginForm = ({ role }) => {
   const initialData = {
@@ -15,6 +17,19 @@ const LoginForm = ({ role }) => {
     setformData({ ...formdata, [e.target.name]: e.target.value });
   };
 
+  const signUpAPI = async () => {
+    try {
+      const response = await clientAPI.post(SIGN_UP, formdata);
+      if (response.status === 200) {
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const logIn = () => {};
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const emailPattern =
@@ -23,14 +38,17 @@ const LoginForm = ({ role }) => {
 
     if (formdata.Role === "SignUp" && formdata.name === "")
       setError("Name Required");
-
     else if (!emailPattern.test(formdata.email))
       setError("Please Validate your Email");
     else if (!passwordPattern.test(formdata.password))
       setError("Password must be 6-15 characters long.");
     else {
       setError("");
-      console.log(formdata);
+      if (formdata.Role === "SignUp") {
+        signUpAPI();
+      } else if (formdata.Role === "SignIn") {
+        logIn();
+      }
     }
   };
 
