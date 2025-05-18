@@ -1,8 +1,9 @@
 import { create } from "zustand";
 
 const useBlogStore = create((set) => ({
-  myBlogs: [],
-  setMyBlogs: (myblog) => set({ myBlogs: myblog }),
+  toggleMyBlog: false,
+  flipMyBlogToggleToTrue: () => set({ toggleMyBlog: true }),
+  flipMyBlogToggleToFalse: () => set({ toggleMyBlog: false }),
   authors: [],
   setAuthors: (author) => set({ authors: author }),
   blogs: [],

@@ -5,11 +5,15 @@ import useBlogStore from "../../store/zustandStore.js";
 
 const DisplayBlogs = () => {
   const [displayAllBlogs, setDisplayAllBlogs] = useState([]);
+  const [myBlog, setMyBlogs] = useState([]);
 
   // Render when the blog has been added
   const toggleWhenAdded = useBlogStore((state) => state.toggleWhenAdded);
   const { blogs } = useBlogStore();
   const { setAuthors } = useBlogStore();
+  const { toggleMyBlog } = useBlogStore();
+
+  const getId = localStorage.getItem("id");
 
   // Function to get all the Blogs
   const getBlogsAPI = async () => {
@@ -19,9 +23,14 @@ const DisplayBlogs = () => {
       });
       if (response.status === 200) {
         setDisplayAllBlogs(response.data.getBlogs);
+        // To get all the Authors
         const getAllAuthors = response.data.getBlogs.map((val) => val.author);
         const uniqueAuthors = [...new Set(getAllAuthors)];
         setAuthors(uniqueAuthors);
+        // To get the Logged user blogs and store it in the state
+        setMyBlogs(
+          response.data.getBlogs.filter((val) => val.userId === getId)
+        );
       }
     } catch (error) {
       if (error.response) {
@@ -38,6 +47,7 @@ const DisplayBlogs = () => {
   // Add the dependencies in case if the user created a error to render realtime
   useEffect(() => {
     getBlogsAPI();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toggleWhenAdded]);
 
   return (
@@ -46,7 +56,12 @@ const DisplayBlogs = () => {
         Blog Feeds
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {(blogs.length > 0 ? blogs : displayAllBlogs).map((blog) => (
+        {(toggleMyBlog === true
+          ? myBlog
+          : blogs.length > 0
+          ? blogs
+          : displayAllBlogs
+        ).map((blog) => (
           <div
             key={blog._id}
             className="bg-white shadow-md rounded-xl p-5 border border-gray-200 hover:shadow-lg transition duration-300"

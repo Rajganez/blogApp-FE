@@ -4,9 +4,14 @@ import { FILTER_BLOGS } from "../../api/constants";
 import useBlogStore from "../../store/zustandStore.js";
 
 const SideBar = () => {
+  // Toggle for authors and categories
   const [showAuthors, setShowAuthors] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
+  // Store the selected authors and categories for filter
+  const [selectedAuthors, setSelectedAuthors] = useState([]);
+  const [selectCategory, setSelectCategory] = useState([]);
 
+  // Given predefined categories
   const categoryToSelect = [
     "Personal Development",
     "Health & Fitness",
@@ -30,11 +35,9 @@ const SideBar = () => {
     "Sustainability / Eco-Living",
   ];
 
-  const [selectedAuthors, setSelectedAuthors] = useState([]);
-  const [selectCategory, setSelectCategory] = useState([]);
-  const getId = localStorage.getItem("id");
-  const { setBlogs } = useBlogStore();
-  const { authors } = useBlogStore();
+  // Variables from the zustand store
+  const { authors, setBlogs, flipMyBlogToggleToTrue, flipMyBlogToggleToFalse } =
+    useBlogStore();
 
   const handleAuthorToggle = (author) => {
     setSelectedAuthors((prev) =>
@@ -55,29 +58,39 @@ const SideBar = () => {
   const handleAuthorClick = () => {
     setShowAuthors((prev) => !prev);
     setShowCategory(false);
+    flipMyBlogToggleToFalse();
   };
 
   const handleCategoryClick = () => {
     setShowCategory((prev) => !prev);
     setShowAuthors(false);
+    flipMyBlogToggleToFalse();
   };
 
   const handleClear = (filters) => {
     if (filters === "author") {
       setSelectedAuthors([]);
       setShowAuthors(false);
+      flipMyBlogToggleToFalse();
     } else if (filters === "category") {
       setSelectCategory([]);
       setShowCategory(false);
+      flipMyBlogToggleToFalse();
     }
   };
 
   const handleAllBlogs = (e) => {
     e.preventDefault();
+    flipMyBlogToggleToFalse();
     setSelectedAuthors([]);
     setSelectCategory([]);
     setShowAuthors(false);
     setShowCategory(false);
+  };
+
+  const handleMyBlogs = (e) => {
+    e.preventDefault();
+    flipMyBlogToggleToTrue();
   };
 
   const filterBlogsAPI = async () => {
@@ -96,6 +109,7 @@ const SideBar = () => {
 
   useEffect(() => {
     filterBlogsAPI();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectCategory, selectedAuthors]);
 
   return (
@@ -182,7 +196,10 @@ const SideBar = () => {
         </div>
 
         <div>
-          <button className="hover:text-blue-400 lg:text-2xl text-sm font-thin text-white cursor-pointer">
+          <button
+            className="hover:text-blue-400 lg:text-2xl text-sm font-thin text-white cursor-pointer"
+            onClick={handleMyBlogs}
+          >
             My Blogs
           </button>
         </div>
