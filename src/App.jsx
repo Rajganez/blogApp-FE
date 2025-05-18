@@ -4,11 +4,19 @@ import "./App.css";
 import Home from "./pages/Home";
 import { Suspense } from "react";
 import BlogPage from "./pages/BlogPage";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 function App() {
   const router = createBrowserRouter([
     { path: "/", element: <Home /> },
-    { path: "/home", element: <BlogPage /> },
+    {
+      path: "/home",
+      element: (
+        <ProtectedRoutes>
+          <BlogPage />
+        </ProtectedRoutes>
+      ),
+    },
   ]);
 
   return (

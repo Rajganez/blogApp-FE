@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { clientAPI } from "../../api/api-axios.js";
-import { SIGN_UP } from "../../api/constants.js";
+import { LOG_IN, SIGN_UP } from "../../api/constants.js";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ role }) => {
+  const navigate = useNavigate();
+
   const initialData = {
     name: "",
     email: "",
@@ -17,19 +20,52 @@ const LoginForm = ({ role }) => {
     setformData({ ...formdata, [e.target.name]: e.target.value });
   };
 
+  // Signup API
   const signUpAPI = async () => {
     try {
       const response = await clientAPI.post(SIGN_UP, formdata);
-      if (response.status === 200) {
-        console.log(response.data);
+      if (response.status === 201) {
+        alert("User Created. Please Login");
+        setformData(initialData);
+        setError("");
       }
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        const { status, data } = error.response;
+        // Error handling done for all the errors
+        if (status === 403) {
+          alert("User already exists. Please Login");
+        } else if (status === 400) {
+          alert("Something went wrong. Please Try again");
+        } else if (status === 500) {
+          alert("Server error. Please try again later");
+        } else {
+          alert(data?.msg || "Unexpected error occurred.");
+        }
+      } else {
+        alert("Unable to connect to the server.");
+      }
     }
   };
 
-  const logIn = () => {};
+  // Login API
+  const logInAPI = async () => {
+    try {
+      const response = await clientAPI.post(LOG_IN, formdata, {
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        localStorage.setItem("auth", "OK");
+        alert(response.data.msg);
+        navigate("/home");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Something went wrong")
+    }
+  };
 
+  // Submit function form handling done
   const handleSubmit = (e) => {
     e.preventDefault();
     const emailPattern =
@@ -47,7 +83,7 @@ const LoginForm = ({ role }) => {
       if (formdata.Role === "SignUp") {
         signUpAPI();
       } else if (formdata.Role === "SignIn") {
-        logIn();
+        logInAPI();
       }
     }
   };
