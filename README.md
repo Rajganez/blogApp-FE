@@ -1,10 +1,13 @@
-## Description : 
+## Description :
+
 Multi-User Blogging App with CRUD, Authentication, JWT
 
-## Tech Stack : 
-Tailwind CSS, React Icons, 
+## Tech Stack :
+
+Tailwind CSS, React Icons,
 
 ## FE Designs :
+
 Sign Up Page,
 Display Name, Email, Set Password
 Login Page,
@@ -14,5 +17,7 @@ Home
 Blog Page,
 
 Home
-Create Blogs,   
+Create Blogs,
+
+How to manage State and with what tool ?
 

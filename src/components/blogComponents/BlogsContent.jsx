@@ -9,9 +9,9 @@ const BlogsContent = () => {
   // Divide the component into two section
   // One for the create blogs and another one for displaying the exsiting blogs
   return (
-    <div className="lg:flex lg:flex-col pt-5 lg:px-2 sticky">
+    <div className="px-3">
       {openCLoseNewBlog && (
-        <div className="">
+        <div className="lg:flex lg:flex-col pt-5 lg:px-2 sticky">
           <NewBlogCreation />
         </div>
       )}
