@@ -7,8 +7,10 @@ const ProtectedRoutes = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    const authToken = localStorage.getItem("auth"); // Adjust if you use cookies
-    if (authToken) {
+    const authToken = localStorage.getItem("auth");
+    const id = localStorage.getItem("id");
+    const name = localStorage.getItem("name");
+    if (authToken && id && name) {
       setAuth(true);
     } else {
       setAuth(false);

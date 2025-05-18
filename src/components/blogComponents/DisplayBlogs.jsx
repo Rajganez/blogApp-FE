@@ -1,27 +1,38 @@
 import { useEffect, useState } from "react";
 import { clientAPI } from "../../api/api-axios.js";
 import { GET_ALL_BLOGS } from "../../api/constants.js";
+import useBlogStore from "../../store/zustandStore.js";
 
 const DisplayBlogs = () => {
   const [displayAllBlogs, setDisplayAllBlogs] = useState([]);
 
+  const toggle = useBlogStore((state) => state.toggle);
+
+  // Function to get all the Blogs
   const getBlogsAPI = async () => {
     try {
       const response = await clientAPI.get(GET_ALL_BLOGS, {
         withCredentials: true,
       });
       if (response.status === 200) {
-        console.log(response.data);
-        setDisplayAllBlogs(response.data.sortedBlogs);
+        setDisplayAllBlogs(response.data.getBlogs);
       }
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        const { status, data } = error.response;
+        if (status === 401) {
+          alert("No Blogs Found");
+        } else {
+          alert(data?.msg || "Unexpected Error Occured");
+        }
+      }
     }
   };
 
+  // Add the dependencies in case if the user created a error to render realtime
   useEffect(() => {
     getBlogsAPI();
-  }, []);
+  }, [toggle]);
 
   return (
     <div className="p-1">

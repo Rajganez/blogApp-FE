@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { clientAPI } from "../../api/api-axios.js";
+import { GET_ALL_BLOGS } from "../../api/constants.js";
+import useBlogStore from "../../store/zustandStore.js";
 
 const NewBlogCreation = () => {
   const categoryToSelect = [
@@ -28,12 +31,18 @@ const NewBlogCreation = () => {
 
   const initialValue = {
     topic: "",
-    contents: "",
+    content: "",
     category: "",
   };
 
   const [content, setContent] = useState(initialValue);
+  const getId = localStorage.getItem("id");
+  const getName = localStorage.getItem("name");
 
+  // Store the blogs in zustand store
+  const { flipToggle } = useBlogStore();
+
+  // Form Onchange function
   const handleChange = (e) => {
     const { name, value } = e.target;
     setContent((prev) => ({
@@ -42,17 +51,48 @@ const NewBlogCreation = () => {
     }));
   };
 
+  const addBlogAPI = async (formData) => {
+    try {
+      const response = await clientAPI.post(GET_ALL_BLOGS, formData, {
+        withCredentials: true,
+      });
+      if (response.status === 201) {
+        alert("Published");
+        flipToggle();
+      }
+    } catch (error) {
+      if (error.response) {
+        const { status, data } = error.response;
+        if (status === 401) {
+          alert("Blog not Published");
+        } else {
+          alert(data?.msg || "Unexpected Error Occured");
+        }
+      }
+    }
+  };
+
+  // Submit function
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (
       content.topic === "" ||
-      content.contents === "" ||
+      content.content === "" ||
       content.category === ""
     ) {
       setError("All fields are required");
     } else {
-      console.log(content);
+      // Temp data created to add the id and name of the logged user in the payload
+      const tempData = {
+        ...content,
+        userId: getId,
+        author: getName,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      // Pass the formData with the additional values and sent it to API payload
+      addBlogAPI(tempData);
       setError("");
       setContent(initialValue);
     }
@@ -60,7 +100,9 @@ const NewBlogCreation = () => {
 
   return (
     <div className="flex flex-col gap-5 p-1">
-      <h2 className="text-center text-blue-900 font-bold font-mono">Create Your Blog</h2>
+      <h2 className="text-center text-blue-900 font-bold font-mono">
+        Create Your Blog
+      </h2>
       {/* Category Section */}
       <div className="lg:text-lg text-sm flex lg:flex-row">
         <div className="flex lg:flex-none">
@@ -107,8 +149,8 @@ const NewBlogCreation = () => {
         </div>
         <div className="lg:ml-24 ml-12">
           <textarea
-            name="contents"
-            value={content.contents}
+            name="content"
+            value={content.content}
             onChange={handleChange}
             placeholder="Your Content"
             className="px-2 py-1 lg:w-2xl w-48 lg:h-20 h-18 border rounded resize-none"

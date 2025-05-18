@@ -56,12 +56,15 @@ const LoginForm = ({ role }) => {
       });
       if (response.status === 200) {
         localStorage.setItem("auth", "OK");
+        localStorage.setItem("id", response.data.id);
+        localStorage.setItem("name", response.data.name);
+        console.log(response);
         alert(response.data.msg);
         navigate("/home");
       }
     } catch (error) {
       console.log(error);
-      alert("Something went wrong")
+      alert("Something went wrong");
     }
   };
 
