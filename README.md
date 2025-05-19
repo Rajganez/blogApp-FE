@@ -68,7 +68,6 @@ This is the **frontend** for the Blogcom web application — a blogging platform
 - **React Router DOM v7** used for navigation.
 - Protected routes:
   - Redirects unauthenticated users to login.
-  - Access to `/home`, `/create`, `/edit/:id`, `/myblogs` only for logged-in users.
+  - Access to `/home` only for logged-in users.
 
 ---
-
