@@ -1,10 +1,10 @@
 // import { useState } from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
-import Home from "./pages/Home";
-import { Suspense } from "react";
-import BlogPage from "./pages/BlogPage";
-import ProtectedRoutes from "./components/ProtectedRoutes";
+import { lazy, Suspense } from "react";
+const Home = lazy(() => import("./pages/Home"));
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const ProtectedRoutes = lazy(() => import("./components/ProtectedRoutes"));
 
 function App() {
   const router = createBrowserRouter([
@@ -21,7 +21,13 @@ function App() {
 
   return (
     <>
-      <Suspense>
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center h-screen">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+          </div>
+        }
+      >
         <RouterProvider router={router}></RouterProvider>
       </Suspense>
     </>

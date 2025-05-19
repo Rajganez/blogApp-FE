@@ -93,6 +93,7 @@ const SideBar = () => {
     flipMyBlogToggleToTrue();
   };
 
+  // Filter the blogs
   const filterBlogsAPI = async () => {
     try {
       const response = await clientAPI.get(

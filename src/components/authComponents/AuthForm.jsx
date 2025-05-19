@@ -1,5 +1,5 @@
-import { useState } from "react";
-import LoginForm from "./LoginForm";
+import { lazy, useState } from "react";
+const LoginForm = lazy(() => import("./LoginForm"));
 
 const AuthForm = () => {
   const [activeTab, setActiveTab] = useState("SignIn");

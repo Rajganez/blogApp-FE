@@ -22,3 +22,6 @@ export const FILTER_BLOGS = (categories = [], authors = []) => {
 
   return `${BLOG_ROUTE}/filter?${queryParams.join("&")}`;
 };
+
+export const EDIT_BLOG_ROUTE = `${BLOG_ROUTE}`
+export const DELETE_BLOG_ROUTE = `${BLOG_ROUTE}`

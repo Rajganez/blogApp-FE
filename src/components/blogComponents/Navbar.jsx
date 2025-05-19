@@ -9,9 +9,6 @@ const Navbar = () => {
           <LiaBlogSolid className="text-2xl lg:text-3xl" />
           <span className="text-red-300 text-xl lg:text-2xl">Blogcom</span>
         </div>
-        <div>
-            <button className="text-3xl text-yellow-600"><IoIosLogOut /></button>
-        </div>
       </nav>
     </>
   );

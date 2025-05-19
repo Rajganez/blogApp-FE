@@ -1,27 +1,74 @@
-## Description :
+# 📝 Blogcom Frontend
 
-Multi-User Blogging App with CRUD, Authentication, JWT
+This is the **frontend** for the Blogcom web application — a blogging platform built with **React** and styled using **Tailwind CSS**. The app provides a user-friendly interface for blogging, featuring authentication, blog management, filtering, and more.
 
-## Tech Stack :
+---
 
-Tailwind CSS, React Icons,
+## 🚀 Tech Stack
 
-## FE Designs :
+- **React** 19
+- **React Router DOM** 7
+- **Tailwind CSS** 4
+- **Zustand** (for state management)
+- **Axios** (for API requests)
+- **Framer Motion** (for animations)
+- **React Icons** (for UI icons)
+- **Vite** (for fast development)
 
-Sign Up Page,
-Display Name, Email, Set Password
-Login Page,
-Email, Password
+---
 
-Home
-Blog Page,
+## ✅ Features Implemented
 
-Home
-Create Blogs,
+### 1. 🔐 Authentication
 
-How to manage State and with what tool ?
-To implement the filter options using the author and category
+- **Sign-Up Page**
+  - Collects user `name`, `email`, and `password`.
+- **Login Page**
+  - Collects user `email` and `password`.
+- Redirects unauthenticated users to the login page.
+- JWT token stored in cookies/localStorage.
 
-1. Use the context API for the props passing
-2. Created the new blog creation FE Once the blog is created pass the prop
-3. In the sidebar component with the filter options pass the props as selectAll, author, category
+---
+
+### 2. ✍️ Blogging Pages
+
+- **Blogs Page**
+
+  - Displays **all blogs**.
+  - Filter by **author**, **category**, or both.
+
+- **Create Blog Page**
+
+  - Input fields: `topic`, `category`, `content`.
+  - Optional: image upload.
+
+- **Edit Blog Page**
+
+  - Allows users to **edit their own blogs**.
+
+- **My Blogs Section**
+  - Displays blogs created by the logged-in user.
+  - Users can **edit** or **delete** their own blogs.
+
+---
+
+### 3. 🎨 UI Features
+
+- Uses **Tailwind CSS** for styling.
+- Filters by category and author implemented using backend query params.
+- Shows **alerts** for:
+  - Blog creation
+  - Blog update/delete success/failure
+  - Unauthorized access
+
+---
+
+### 4. 🔁 Routing
+
+- **React Router DOM v7** used for navigation.
+- Protected routes:
+  - Redirects unauthenticated users to login.
+  - Access to `/home`, `/create`, `/edit/:id`, `/myblogs` only for logged-in users.
+
+---
+
