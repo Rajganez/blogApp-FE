@@ -58,7 +58,6 @@ const LoginForm = ({ role }) => {
         localStorage.setItem("auth", "OK");
         localStorage.setItem("id", response.data.id);
         localStorage.setItem("name", response.data.name);
-        console.log(response);
         alert(response.data.msg);
         navigate("/home");
       }
